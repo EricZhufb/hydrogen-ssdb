@@ -146,6 +146,9 @@ public class Response {
     }
 
     public byte[] getBytes() {
+    	if (header.equals("not_found")) {
+    		return null;
+    	}
         return content;
     }
 }

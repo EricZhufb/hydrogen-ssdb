@@ -289,6 +289,14 @@ public class SsdbClient extends AbstractClient {
         sendWriteRequest("hset", key, propName, propValue);
     }
 
+    public void hset(String key, String propName, byte[] propValue) {
+        sendWriteRequest("hset", key, propName, propValue);
+    }
+
+    public byte[] hgetBytes(String key, String propName) {
+        return sendRequest("hget", key, propName).getBytes();
+    }
+    
     public String hget(String key, String propName) {
         return sendRequest("hget", key, propName).firstBlock();
     }

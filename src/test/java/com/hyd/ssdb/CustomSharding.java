@@ -9,6 +9,7 @@ package com.hyd.ssdb;
 public class CustomSharding {
 
     public static void main(String[] args) {
+    	
         SsdbClient client = new SsdbClient(new AjiaSharding());
 
         client.set("name", "ajia");

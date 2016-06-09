@@ -16,8 +16,8 @@ public class MasterSlaveTest {
     public static void main(String[] args) {
 
         List<Server> servers = Arrays.asList(
-                new Server("192.168.1.180", 8888, null, true),  // 主服务器
-                new Server("192.168.1.180", 8889, null, false)  // 从服务器
+                new Server("172.18.109.244", 8888, null, true),  // 主服务器
+                new Server("172.18.109.244", 9999, null, false)  // 从服务器
         );
 
         SsdbClient client = new SsdbClient(servers);

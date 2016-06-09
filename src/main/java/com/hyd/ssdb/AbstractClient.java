@@ -10,6 +10,8 @@ import com.hyd.ssdb.protocol.Response;
 import com.hyd.ssdb.protocol.WriteRequest;
 import com.hyd.ssdb.util.IdScore;
 import com.hyd.ssdb.util.KeyValue;
+
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
@@ -21,7 +23,7 @@ import java.util.List;
  */
 public abstract class AbstractClient {
 
-    static final org.slf4j.Logger LOG = LoggerFactory.getLogger(AbstractClient.class);
+    protected static Logger log = LoggerFactory.getLogger(AbstractClient.class);
 
     /**
      * 管理所有的 SSDB 连接
@@ -108,10 +110,11 @@ public abstract class AbstractClient {
             } catch (SsdbNoServerAvailableException e) {
                 throw e;
             } catch (SsdbClientException e) {
-                LOG.error("Connection error", e);
+            	log.warn("Connection error", e);
 
                 // 标记不可用的服务器，这样下次调用 getConnectionPool() 就会切换到其他服务器了
-                connectionPoolManager.reportInvalidConnection(connection);
+                // do not report invalid connection 
+//                connectionPoolManager.reportInvalidConnection(connection);
                 needResend = true;
             } catch (SsdbServerException e) {
                 throw e;
@@ -185,7 +188,7 @@ public abstract class AbstractClient {
     // 检查服务器回应，如果是错误回应则抛出一个异常
     private void checkResponse(String requestHeader, Response response) {
         String header = response.getHeader();
-        LOG.debug("RESPONSE(" + requestHeader + "): [" + header + "] - (" + response.getBlocks().size() + " blocks)");
+        log.debug("RESPONSE(" + requestHeader + "): [" + header + "] - (" + response.getBlocks().size() + " blocks)");
 
         if (!(header.equals("ok") || header.equals("not_found"))) {
             SsdbException e = new SsdbException("Server return error: '" + header + "'");
